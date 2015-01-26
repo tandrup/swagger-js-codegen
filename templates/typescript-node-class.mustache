@@ -1,0 +1,19 @@
+import request = require('request');
+import promise = require('bluebird');
+
+/**
+ * {{&description}}
+ * @class {{&className}}
+ * @param {string} domain - The project domain
+ */
+export class {{&className}} {
+    'use strict';
+
+    constructor(private domain: string) {
+
+    }
+
+    {{#methods}}
+        {{> method}}
+    {{/methods}}
+}
