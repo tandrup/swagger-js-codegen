@@ -1,6 +1,21 @@
 import request = require('request');
 import promise = require('bluebird');
 
+{{#models}}
+/**
+ * {{&description}}
+ */
+interface {{&name}} {
+    {{#properties}}
+    /**
+     * {{&description}}
+     */
+    {{&name}}: {{&type}};
+    {{/properties}}
+}
+
+{{/models}}
+
 /**
  * {{&description}}
  * @class {{&className}}
