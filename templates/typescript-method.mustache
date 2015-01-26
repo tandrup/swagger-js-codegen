@@ -7,16 +7,12 @@
 {{/parameters}}
  * 
  */
-public {{&methodName}}(parameters) {
-    if(parameters === undefined) {
-        parameters = {};
-    }
-    var deferred = promise.defer();
+public {{&methodName}}({{#parameters}}{{&camelCaseName}}: {{&type}}, {{/parameters}} $queryParameters?: any) : Promise<{response: any; body: {{&returnType}};}> {
+    var deferred = promise.defer<{response: any; body: {{&returnType}};}>();
     
     var domain = this.domain;
     var path = '{{&path}}';
     
-    var body;
     var queryParameters = {};
     var headers = {};
     var form = {};
@@ -28,14 +24,14 @@ public {{&methodName}}(parameters) {
                 queryParameters['{{&name}}'] = '{{&singleton}}';
             {{/isSingleton}}
             {{^isSingleton}}
-                if(parameters['{{&camelCaseName}}'] !== undefined){
-                    queryParameters['{{&name}}'] = parameters['{{&camelCaseName}}'];
+                if('{{&camelCaseName}}' !== undefined){
+                    queryParameters['{{&name}}'] = {{&camelCaseName}};
                 }
             {{/isSingleton}}
         {{/isQueryParameter}}
         
         {{#isPathParameter}}
-            path = path.replace('{{=<% %>=}}{<%&name%>}<%={{ }}=%>', parameters['{{&camelCaseName}}']);
+            path = path.replace('{{=<% %>=}}{<%&name%>}<%={{ }}=%>', {{&camelCaseName}});
         {{/isPathParameter}}
         
         {{#isHeaderParameter}}
@@ -43,15 +39,15 @@ public {{&methodName}}(parameters) {
                 headers['{{&name}}'] = '{{&singleton}}';
             {{/isSingleton}}
             {{^isSingleton}}
-                if(parameters.{{&camelCaseName}} !== undefined){
-                    headers['{{&name}}'] = parameters['{{&camelCaseName}}'];
+                if({{&camelCaseName}} !== undefined){
+                    headers['{{&name}}'] = {{&camelCaseName}};
                 }
             {{/isSingleton}}
         {{/isHeaderParameter}}
         
         {{#isBodyParameter}}
-            if(parameters.{{&camelCaseName}} !== undefined){
-                body = parameters['{{&camelCaseName}}'];
+            if({{&camelCaseName}} !== undefined){
+                body = {{&camelCaseName}};
             }
         {{/isBodyParameter}}
 
@@ -60,14 +56,14 @@ public {{&methodName}}(parameters) {
                 form['{{&name}}'] = '{{&singleton}}';
             {{/isSingleton}}
             {{^isSingleton}}
-                if(parameters['{{&camelCaseName}}'] !== undefined){
-                    form['{{&name}}'] = parameters['{{&camelCaseName}}'];
+                if({{&camelCaseName}} !== undefined){
+                    form['{{&name}}'] = {{&camelCaseName}};
                 }
             {{/isSingleton}}
         {{/isFormParameter}}
 
         {{#required}}
-        if(parameters['{{&camelCaseName}}'] === undefined){
+        if({{&camelCaseName}} === undefined){
             deferred.reject(new Error('Missing required {{&paramType}} parameter: {{&camelCaseName}}'));
             return deferred.promise;
         }
@@ -75,10 +71,10 @@ public {{&methodName}}(parameters) {
  
     {{/parameters}}
     
-    if(parameters.$queryParameters) {
-        Object.keys(parameters.$queryParameters)
+    if($queryParameters) {
+        Object.keys($queryParameters)
         .forEach(function(parameterName){
-            var parameter = parameters.$queryParameters[parameterName];
+            var parameter = $queryParameters[parameterName];
             queryParameters[parameterName] = parameter;
         });
     }
