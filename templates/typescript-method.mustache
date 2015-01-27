@@ -7,15 +7,17 @@
 {{/parameters}}
  * 
  */
-public {{&methodName}}({{#parameters}}{{&camelCaseName}}: {{&type}}, {{/parameters}} $queryParameters?: any) : Promise<{response: any; body: {{&returnType}};}> {
-    var deferred = promise.defer<{response: any; body: {{&returnType}};}>();
+public {{&methodName}}({{#parameters}}{{&camelCaseName}}: {{&type}}, {{/parameters}} $queryParameters?: any) : Promise<{response: any;
+body: {{&returnType}};}> {
+    var deferred = promise.defer<{response: any; 
+    body: {{&returnType}};}>();
     
     var domain = this.domain;
     var path = '{{&path}}';
     
-    var queryParameters = {};
-    var headers = {};
-    var form = {};
+    var queryParameters: any = {};
+    var headers: any = {};
+    var form: any = {};
 
     {{#parameters}}
        

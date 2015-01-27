@@ -14,7 +14,7 @@ if(typeof(body) === 'object') {
     req.json = true;
 }
 {{/hasBody}}
-request(req, function(error, response, body){
+request(req, (error: any, response: any, body: any) => {
     if(error) {
         deferred.reject(error);
     } else {
@@ -22,7 +22,7 @@ request(req, function(error, response, body){
             try {
                 body = JSON.parse(body);
             } catch(e) {
-            
+                console.log('Unable to parse body as JSON ' + body);
             }
         }
         if(response.statusCode >= 200 && response.statusCode <= 299) {
